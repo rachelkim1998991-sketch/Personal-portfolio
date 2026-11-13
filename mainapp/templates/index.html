@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ profile.name }} — {{ profile.role }}{% endblock %}
+
+{% block content %}
+<section class="bg-white rounded-lg shadow-sm p-8 flex flex-col sm:flex-row items-center gap-8">
+    <img class="h-48 w-48 rounded-full object-cover" src="{% static 'image/img.jpg' %}" alt="{{ profile.name }}">
+    <div class="text-center sm:text-left space-y-2">
+        <h1 class="text-4xl font-semibold">{{ profile.name }}</h1>
+        <p class="text-gray-500 font-medium">{{ profile.role }}</p>
+        <p>{{ profile.tagline }}</p>
+        <div class="flex flex-wrap gap-3 justify-center sm:justify-start pt-3">
+            <a href="#projects" class="rounded-full bg-purple-600 px-6 py-2 text-white hover:bg-purple-700 transition">Loyihalarim</a>
+            {% if profile.cv_url %}<a href="{{ profile.cv_url }}" class="rounded-full border-2 border-purple-600 px-6 py-2 text-purple-700 hover:bg-purple-50 transition">CV yuklab olish</a>{% endif %}
+            <a href="{% url 'contact' %}" class="rounded-full border-2 border-purple-200 px-6 py-2 text-purple-700 hover:bg-purple-50 transition">Aloqa</a>
+        </div>
+    </div>
+</section>
+
+<!-- 2. HAQIMDA -->
+<section id="about" class="mt-10 bg-white rounded-lg shadow-sm p-8">
+    <h2 class="text-2xl font-semibold mb-3">Men haqimda</h2>
+    <p class="text-gray-700">Najot Ta’lim bitiruvchisiman, asosiy yo‘nalishim — Backend dasturlash.
+        FastAPI freymvorki, ma’lumotlar bazalari, asinxron vazifalar (Celery, Redis) hamda Docker konteynerlari bilan ishlash tajribasiga egaman.
+        Hozirda Full-stack bilimlarimni kengaytirish maqsadida HTML va CSS ni ham chuqurroq o‘rganmoqdaman.
+        Mas’uliyatli, toza kod yozishga intiluvchi va yangi texnologiyalarni tez o‘zlashtiruvchi mutaxassisman.</p>
+</section>
+
+<!-- 3. KO'NIKMALAR -->
+<section id="skills" class="mt-10 bg-white rounded-lg shadow-sm p-8">
+    <h2 class="text-2xl font-semibold mb-4">Ko'nikmalar</h2>
+    {% for category, items in skills.items %}
+        <h3 class="text-sm font-medium text-gray-500 mt-4 mb-2">{{ category }}</h3>
+        <div class="flex flex-wrap gap-2">
+            {% for s in items %}<span class="rounded-full bg-purple-100 text-purple-800 px-3 py-1 text-sm">{{ s.name }}</span>{% endfor %}
+        </div>
+    {% empty %}
+        <p class="text-gray-400">Admin paneldan ko'nikmalar qo'shing (/admin/).</p>
+    {% endfor %}
+</section>
+
+<!-- 4. LOYIHALAR -->
+<section id="projects" class="mt-10">
+    <h2 class="text-2xl font-semibold mb-4">Loyihalar</h2>
+    <div class="grid gap-6 sm:grid-cols-2">
+        {% for p in projects %}
+        <article class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col">
+            {% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.title }}" class="h-44 w-full object-cover">{% endif %}
+            <div class="p-6 flex-1 flex flex-col">
+                <h3 class="text-lg font-semibold">{{ p.title }}</h3>
+                <p class="text-gray-600 text-sm mt-2 flex-1">{{ p.description }}</p>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    {% for t in p.tech_list %}<span class="rounded bg-gray-100 px-2 py-0.5 text-xs">{{ t }}</span>{% endfor %}
+                </div>
+                <div class="flex gap-4 mt-4 text-sm font-medium">
+                    {% if p.github_url %}<a class="text-purple-600 hover:text-purple-800" href="{{ p.github_url }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+                    {% if p.demo_url %}<a class="text-purple-600 hover:text-purple-800" href="{{ p.demo_url }}" target="_blank" rel="noopener">Demo</a>{% endif %}
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <p class="text-gray-400">Admin paneldan loyihalar qo'shing (/admin/).</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

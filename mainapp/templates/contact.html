@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Aloqa — {{ profile.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto space-y-4">
+    <h1 class="text-2xl font-semibold text-center mb-2">Aloqa</h1>
+
+    <a href="tel:{{ profile.phone }}" class="block rounded-full bg-purple-600 px-6 py-3 text-white text-center font-medium hover:bg-purple-700 transition">Telefon: {{ profile.phone }}</a>
+    <a href="mailto:{{ profile.email }}" class="block rounded-full bg-purple-600 px-6 py-3 text-white text-center font-medium hover:bg-purple-700 transition">Email: {{ profile.email }}</a>
+
+    <form method="post" class="bg-white rounded-lg shadow-sm p-6 space-y-3 mt-6">
+        <h2 class="font-semibold">Xabar yuborish</h2>
+        {% for m in messages %}<p class="rounded bg-green-100 text-green-800 px-3 py-2 text-sm">{{ m }}</p>{% endfor %}
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for f in form %}
+            {{ f }}
+            {% for e in f.errors %}<p class="text-red-600 text-xs">{{ e }}</p>{% endfor %}
+        {% endfor %}
+        <button class="rounded-full bg-purple-600 px-6 py-2 text-white hover:bg-purple-700 transition">Yuborish</button>
+    </form>
+
+    <p class="text-center pt-2"><a href="{% url 'index' %}" class="text-purple-600 hover:text-purple-800 text-sm font-medium">← Portfolio sahifasiga qaytish</a></p>
+</div>
+{% endblock %}

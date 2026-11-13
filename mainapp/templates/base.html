@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ profile.name }} — Portfolio{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="{% url 'index' %}" class="text-lg font-semibold text-purple-600">
+                {{ profile.name|default:"Portfolio" }}
+            </a>
+            <div class="flex gap-6 text-sm font-medium">
+                <a href="{% url 'index' %}" class="hover:text-purple-600 transition">Bosh sahifa</a>
+                <a href="{% url 'contact' %}" class="hover:text-purple-600 transition">Aloqa</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-10">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-white border-t">
+        <div class="max-w-4xl mx-auto px-4 py-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500">
+            {% if profile.github %}
+                <a href="https://github.com/{{ profile.github }}" target="_blank" rel="noopener" class="hover:text-purple-600 transition">GitHub</a>
+            {% endif %}
+            {% if profile.telegram %}
+                <a href="https://t.me/{{ profile.telegram }}" target="_blank" rel="noopener" class="hover:text-purple-600 transition">Telegram</a>
+            {% endif %}
+            {% if profile.linkedin %}
+                <a href="{{ profile.linkedin }}" target="_blank" rel="noopener" class="hover:text-purple-600 transition">LinkedIn</a>
+            {% endif %}
+            <span>&copy; {% now "Y" %} {{ profile.name }}</span>
+        </div>
+    </footer>
+
+</body>
+</html>
